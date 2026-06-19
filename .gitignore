@@ -11,5 +11,8 @@ build/
 downloads/
 python-3.12/
 ffmpeg-master-latest-win64-gpl/
+ffmpeg.zip
+python-3.12.10-embed-amd64.zip
 .env
 .DS_Store
+logs/
