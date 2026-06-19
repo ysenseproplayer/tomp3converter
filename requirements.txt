@@ -1,2 +1,4 @@
-yt-dlp==2021.12.17
-pydub==0.25.1
+yt-dlp
+pydub
+flask
+flask-cors

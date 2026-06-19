@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ description }}">
+    <meta name="keywords" content="youtube to mp3, youtube downloader, mp3 converter, free youtube download, online youtube converter">
+    <meta name="author" content="YouTube Downloader">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:type" content="website">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo">
+                tomp3
+            </a>
+            <nav>
+                <a href="/" class="nav-link {% if page == 'mp3' %}active{% endif %}">Youtube to MP3</a>
+                <a href="/youtube-to-mp4" class="nav-link {% if page == 'mp4' %}active{% endif %}">Youtube to MP4</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h1>YouTube Downloader</h1>
+            <p>Download YouTube videos in high quality for free. Fast, easy, and no registration required!</p>
+        </section>
+
+        <div class="container">
+            <h1>YouTube to MP3 Converter</h1>
+            <p class="subtitle">Enter the YouTube URL below, select your preferred format and quality, then click download!</p>
+            
+            <div class="options-group">
+                <div class="select-wrapper">
+                    <label>Format</label>
+                    <select id="formatSelect">
+                        <option value="mp3">MP3 (Recommended)</option>
+                        <option value="m4a">M4A</option>
+                        <option value="wav">WAV</option>
+                        <option value="flac">FLAC</option>
+                    </select>
+                </div>
+                <div class="select-wrapper">
+                    <label>Quality</label>
+                    <select id="qualitySelect">
+                        <option value="320">320 kbps (Best)</option>
+                        <option value="256">256 kbps</option>
+                        <option value="192" selected>192 kbps (Good)</option>
+                        <option value="128">128 kbps</option>
+                        <option value="96">96 kbps</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>YouTube URL</label>
+                <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/...">
+            </div>
+
+            <button id="downloadBtn">Download Audio</button>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <p class="status-text" id="statusText">Starting download...</p>
+            </div>
+
+            <div class="download-link-container" id="downloadLinkContainer">
+                <p class="file-info" id="fileInfo"></p>
+                <a href="#" class="download-link" id="downloadLink">Download File</a>
+            </div>
+
+            <div class="error-container" id="errorContainer">
+                <p class="error-text" id="errorText"></p>
+            </div>
+        </div>
+
+        <section class="info-section">
+            <h2>High-Quality Outputs: From 96kbps to 320kbps</h2>
+            <p>One of the key features of our YouTube downloader is the high-quality audio output options it offers. Whether you're downloading a simple tutorial, a podcast, or your favorite music video, our tool ensures that you can select the optimal quality for your needs.</p>
+            <p>We offer a wide range of audio qualities, from low to high bitrate. For casual users or those with limited bandwidth, there's the 96kbps or 128kbps option. For those who want higher definition, we provide 192kbps, 256kbps, as well as 320kbps for users who want the absolute best quality.</p>
+        </section>
+
+        <section class="info-section">
+            <h2>How to Download and Convert YouTube Videos Using tomp3</h2>
+            <p>Downloading YouTube videos with our downloader is a quick and easy process. To make it even easier, here's a step-by-step guide on how to use the tool:</p>
+            <ol>
+                <li>Step 1: Find the YouTube video you want to download. You can do this by visiting the YouTube website or using the YouTube mobile app.</li>
+                <li>Step 2: Copy the URL of the video. You can do this by right-clicking the video on the browser or using the share button in the app.</li>
+                <li>Step 3: Go to our website and paste the URL into the input box on this page.</li>
+                <li>Step 4: Choose the format you want to download. For audio, select MP3, M4A, WAV, or FLAC.</li>
+                <li>Step 5: Select the quality you want. We offer multiple options ranging from 96kbps to 320kbps.</li>
+                <li>Step 6: Click the "Download Audio" button, and the tool will begin processing the video for download.</li>
+                <li>Step 7: Once the process is complete, the file will be ready for you to download. You can save it to your computer, mobile device, or cloud storage.</li>
+            </ol>
+        </section>
+
+        <section class="info-section">
+            <h2>FAQ Section</h2>
+            <ul>
+                <li><strong>What is tomp3 and how does it work as a YouTube downloader?</strong><br>
+                tomp3 is an online tool that allows users to download audio from YouTube in various formats such as MP3, M4A, and more. To use tomp3, simply copy the video URL from YouTube, paste it into the input field on our website, choose your preferred format and quality, and click download.</li>
+                <li><strong>How can I convert YouTube videos to MP3 using tomp3?</strong><br>
+                To convert YouTube videos to MP3, simply paste the video URL into our tool, select MP3 as the output format, and click "Download Audio." The audio will be extracted from the video, and the MP3 file will be available for download.</li>
+                <li><strong>Is tomp3 free to use for downloading YouTube videos?</strong><br>
+                Yes, tomp3 is completely free to use. There are no fees associated with downloading videos or converting YouTube to MP3. It's a free, easy-to-use tool that doesn't require registration or a subscription.</li>
+                <li><strong>Can I download videos in high quality using tomp3?</strong><br>
+                Yes, tomp3 supports high-quality audio downloads, ranging from 96kbps to 320kbps. You can choose the quality that best suits your device or preferences, ensuring a perfect listening experience.</li>
+                <li><strong>Can I use tomp3 on mobile devices?</strong><br>
+                Yes, tomp3 works on both mobile devices and desktops. You can download and convert YouTube videos on your smartphone, tablet, or computer without any issues.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="#">DMCA</a>
+                <a href="#">Disclaimer</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-bottom">
+                © 2026 tomp3
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentTaskId = null;
+        let pollInterval = null;
+        
+        const urlInput = document.getElementById('urlInput');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const statusText = document.getElementById('statusText');
+        const downloadLinkContainer = document.getElementById('downloadLinkContainer');
+        const downloadLink = document.getElementById('downloadLink');
+        const fileInfo = document.getElementById('fileInfo');
+        const errorContainer = document.getElementById('errorContainer');
+        const errorText = document.getElementById('errorText');
+        const formatSelect = document.getElementById('formatSelect');
+        const qualitySelect = document.getElementById('qualitySelect');
+        
+        downloadBtn.addEventListener('click', startDownload);
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') startDownload();
+        });
+        
+        function resetUI() {
+            progressContainer.classList.remove('active');
+            downloadLinkContainer.classList.remove('active');
+            errorContainer.classList.remove('active');
+            progressBar.style.width = '0%';
+            downloadBtn.disabled = false;
+            currentTaskId = null;
+            if (pollInterval) {
+                clearInterval(pollInterval);
+                pollInterval = null;
+            }
+        }
+        
+        async function startDownload() {
+            const url = urlInput.value.trim();
+            if (!url) return;
+            
+            resetUI();
+            downloadBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        url, 
+                        format: formatSelect.value,
+                        quality: qualitySelect.value
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'started') {
+                    currentTaskId = data.task_id;
+                    progressContainer.classList.add('active');
+                    pollStatus();
+                } else if (data.status === 'error') {
+                    showError(data.message);
+                }
+            } catch (error) {
+                showError('Failed to start download');
+            }
+        }
+        
+        async function pollStatus() {
+            pollInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`/api/status/${currentTaskId}`);
+                    const task = await response.json();
+                    
+                    updateUI(task);
+                } catch (error) {
+                    console.error(error);
+                }
+            }, 500);
+        }
+        
+        function updateUI(task) {
+            progressBar.style.width = `${task.progress}%`;
+            
+            switch (task.status) {
+                case 'starting':
+                    statusText.textContent = 'Starting download...';
+                    break;
+                case 'downloading':
+                    statusText.textContent = 'Downloading audio...';
+                    break;
+                case 'converting':
+                    statusText.textContent = 'Converting format...';
+                    break;
+                case 'completed':
+                    clearInterval(pollInterval);
+                    statusText.textContent = 'Download complete!';
+                    showDownloadLink(task);
+                    break;
+                case 'error':
+                    clearInterval(pollInterval);
+                    showError(task.message);
+                    break;
+            }
+        }
+        
+        function showDownloadLink(task) {
+            downloadLinkContainer.classList.add('active');
+            fileInfo.textContent = `${task.filename} (${task.file_size})`;
+            downloadLink.href = `/downloads/${encodeURIComponent(task.filename)}`;
+            downloadBtn.disabled = false;
+        }
+        
+        function showError(message) {
+            errorContainer.classList.add('active');
+            errorText.textContent = message;
+            progressContainer.classList.remove('active');
+            downloadBtn.disabled = false;
+        }
+    </script>
+</body>
+</html>

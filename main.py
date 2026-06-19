@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import logging.config
 from src.downloader import YoutubeDownloader
 from src.converter import AudioConverter
@@ -11,7 +13,11 @@ logger = logging.getLogger(__name__)
 
 def main():
     try:
-        url = input("Enter YouTube video URL: ")
+        if len(sys.argv) > 1:
+            url = sys.argv[1]
+        else:
+            url = input("Enter YouTube video URL: ")
+        
         output_template = os.path.join(DOWNLOAD_DIR, '%(title)s.%(ext)s')
 
         downloader = YoutubeDownloader(output_template)

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dll
+*.exe
+*.egg-info/
+dist/
+build/
+downloads/
+python-3.12/
+ffmpeg-master-latest-win64-gpl/
+.env
+.DS_Store
