@@ -34,25 +34,30 @@ def process_download(task_id, url, format_type, quality):
             'quiet': False,
             'no_warnings': False,
             'progress_hooks': [progress_hook],
-            'user-agent': 'Mozilla/5.0 (Linux; Android 13; SM-A536B Build/TP1A.220624.014) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36',
+            'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
             'http_headers': {
-                'User-Agent': 'Mozilla/5.0 (Linux; Android 13; SM-A536B Build/TP1A.220624.014) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36',
+                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Language': 'en-us,en;q=0.5',
-                'Accept-Encoding': 'gzip,deflate',
-                'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Accept-Encoding': 'gzip, deflate, br',
                 'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'TE': 'Trailers'
             },
             'extractor_args': {
                 'youtube': {
-                    'player_client': ['android', 'web', 'ios']
+                    'player_client': ['ios', 'android', 'web'],
+                    'player_skip': ['js'],
+                    'skip': ['dash', 'hls']
                 }
             },
             'nocheckcertificate': True,
             'ignoreerrors': False,
-            'retries': 10,
-            'fragment_retries': 10,
-            'skip_unavailable_fragments': True
+            'retries': 15,
+            'fragment_retries': 15,
+            'skip_unavailable_fragments': True,
+            'geo_bypass': True,
+            'geo_bypass_country': 'US'
         }
 
         if format_type == 'mp4':
