@@ -46,6 +46,9 @@ def process_download(task_id, url, format_type, quality):
             timeout=30
         )
 
+        print(f"Cobalt API status code: {cobalt_response.status_code}")
+        print(f"Cobalt API response: {cobalt_response.text}")
+
         cobalt_response.raise_for_status()
         cobalt_data = cobalt_response.json()
 
