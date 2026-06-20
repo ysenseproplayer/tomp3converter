@@ -19,25 +19,25 @@ def process_download(task_id, url, format_type, quality):
 
         # Map quality values for Cobalt API
         if format_type == 'mp4':
-            # Video download: Cobalt uses values like 1080, 720, 480, etc.
+            # Video download: Cobalt uses correct keys from docs
             cobalt_payload = {
                 'url': url,
-                'isAudioOnly': False,
-                'vQuality': quality,
-                'vCodec': 'h264',
-                'filenamePattern': 'classic'
+                'downloadMode': 'auto',
+                'videoQuality': quality,
+                'youtubeVideoCodec': 'h264',
+                'filenameStyle': 'basic'
             }
         else:
-            # Audio download: Cobalt uses aFormat and we don't need bitrate (it uses best)
+            # Audio download: Cobalt uses correct keys
             cobalt_payload = {
                 'url': url,
-                'isAudioOnly': True,
-                'aFormat': format_type,
-                'filenamePattern': 'classic'
+                'downloadMode': 'audio',
+                'audioFormat': format_type,
+                'filenameStyle': 'basic'
             }
 
         cobalt_response = requests.post(
-            'https://api.cobalt.tools/api/json',
+            'https://api.cobalt.tools/',
             json=cobalt_payload,
             headers={
                 'Accept': 'application/json',
@@ -56,7 +56,8 @@ def process_download(task_id, url, format_type, quality):
             tasks[task_id]['status'] = 'downloading'
             tasks[task_id]['progress'] = 75
 
-        if cobalt_data.get('status') == 'success':
+        status = cobalt_data.get('status')
+        if status in ['success', 'redirect', 'tunnel']:
             download_url = cobalt_data['url']
             filename = cobalt_data.get('filename', f'download.{format_type}')
             file_path = os.path.join(DOWNLOAD_FOLDER, filename)
@@ -83,7 +84,7 @@ def process_download(task_id, url, format_type, quality):
                 tasks[task_id]['filename'] = filename
                 tasks[task_id]['file_size'] = format_file_size(os.path.getsize(file_path))
         else:
-            raise Exception(cobalt_data.get('text', 'Unknown error from Cobalt API'))
+            raise Exception(cobalt_data.get('text', f'Unknown error from Cobalt API: {status}'))
 
     except Exception as e:
         with tasks_lock:
