@@ -2,10 +2,10 @@
 Free, fast YouTube to MP3/MP4 converter!
 
 ## Super Simple Deploy (Render)
-1. Go to render.com and sign up
+1. Go to [render.com](https://render.com) and sign up/login
 2. Click "New" → "Web Service"
-3. Choose your GitHub repo
-4. Add buildpack: `https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git` (move above Python buildpack)
-5. Click "Deploy!
+3. Choose your GitHub repo `tomp3converter`
+4. Render will auto-detect `render.yaml` and configure everything for you!
+5. Click "Deploy Latest Commit"
 
 That's it!

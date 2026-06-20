@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: tomp3converter
+    runtime: python
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --preload
+    envVars:
+      - key: PORT
+        value: 10000
+    buildpacks:
+      - url: https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
+      - url: https://github.com/renderinc/heroku-buildpack-python.git
