@@ -1,7 +1,7 @@
 import os
 import threading
+import requests
 from flask import Flask, render_template, request, jsonify, send_from_directory
-import yt_dlp
 
 app = Flask(__name__)
 DOWNLOAD_FOLDER = 'downloads'
@@ -15,85 +15,63 @@ tasks_lock = threading.Lock()
 def process_download(task_id, url, format_type, quality):
     try:
         with tasks_lock:
-            tasks[task_id] = {'status': 'downloading', 'progress': 0}
+            tasks[task_id] = {'status': 'processing', 'progress': 25}
 
-        def progress_hook(d):
-            if d['status'] == 'downloading':
-                try:
-                    total = d.get('total_bytes', 0) or d.get('total_bytes_estimate', 0)
-                    downloaded = d.get('downloaded_bytes', 0)
-                    if total > 0:
-                        progress = int((downloaded / total) * 100)
-                        with tasks_lock:
-                            tasks[task_id]['progress'] = progress
-                except Exception:
-                    pass
-
-        ydl_opts = {
-            'outtmpl': os.path.join(DOWNLOAD_FOLDER, '%(title)s.%(ext)s'),
-            'quiet': False,
-            'no_warnings': False,
-            'progress_hooks': [progress_hook],
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0',
-            'http_headers': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:127.0) Gecko/20100101 Firefox/127.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1',
-                'Sec-Fetch-Dest': 'document',
-                'Sec-Fetch-Mode': 'navigate',
-                'Sec-Fetch-Site': 'none',
-                'Sec-Fetch-User': '?1',
-                'Pragma': 'no-cache',
-                'Cache-Control': 'no-cache'
-            },
-            'extractor_args': {
-                'youtube': {
-                    'player_client': ['android_music', 'ios', 'android', 'web'],
-                    'player_skip': ['configs', 'js'],
-                    'skip': ['dash', 'hls'],
-                    'comment_sort': ['top'],
-                    'playlistend': ['1']
-                }
-            },
-            'nocheckcertificate': True,
-            'ignoreerrors': False,
-            'retries': 20,
-            'fragment_retries': 20,
-            'skip_unavailable_fragments': True,
-            'geo_bypass': True,
-            'geo_bypass_country': 'IN'
+        # Cobalt API call
+        cobalt_payload = {
+            'url': url,
+            'aFormat': format_type if format_type != 'mp4' else 'mp3',
+            'vCodec': 'h264',
+            'vQuality': quality if format_type == 'mp4' else None,
+            'isAudioOnly': format_type != 'mp4',
+            'downloadMode': 'auto'
         }
 
-        if format_type == 'mp4':
-            ydl_opts['format'] = f'bestvideo[height<={quality}]+bestaudio/best[height<={quality}]/best'
-            ydl_opts['merge_output_format'] = 'mp4'
-        else:
-            ydl_opts['format'] = 'bestaudio/best'
-            ydl_opts['postprocessors'] = [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': format_type,
-                'preferredquality': quality,
-            }]
+        cobalt_response = requests.post(
+            'https://api.cobalt.tools/api/json',
+            json=cobalt_payload,
+            headers={
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            timeout=30
+        )
 
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=True)
-            filename = ydl.prepare_filename(info)
-            if format_type != 'mp4':
-                base, _ = os.path.splitext(filename)
-                for ext in ['.mp3', '.m4a', '.wav', '.flac']:
-                    candidate = base + ext
-                    if os.path.exists(candidate):
-                        filename = candidate
-                        break
+        cobalt_response.raise_for_status()
+        cobalt_data = cobalt_response.json()
 
         with tasks_lock:
-            tasks[task_id]['status'] = 'completed'
-            tasks[task_id]['progress'] = 100
-            tasks[task_id]['filename'] = os.path.basename(filename)
-            tasks[task_id]['file_size'] = format_file_size(os.path.getsize(filename))
+            tasks[task_id]['status'] = 'downloading'
+            tasks[task_id]['progress'] = 75
+
+        if cobalt_data.get('status') == 'success':
+            download_url = cobalt_data['url']
+            filename = cobalt_data.get('filename', f'download.{format_type}')
+            file_path = os.path.join(DOWNLOAD_FOLDER, filename)
+
+            # Download the file
+            with requests.get(download_url, stream=True, timeout=120) as r:
+                r.raise_for_status()
+                total_size = int(r.headers.get('content-length', 0))
+                downloaded = 0
+
+                with open(file_path, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+                            downloaded += len(chunk)
+                            if total_size > 0:
+                                progress = 75 + int((downloaded / total_size) * 25)
+                                with tasks_lock:
+                                    tasks[task_id]['progress'] = min(progress, 100)
+
+            with tasks_lock:
+                tasks[task_id]['status'] = 'completed'
+                tasks[task_id]['progress'] = 100
+                tasks[task_id]['filename'] = filename
+                tasks[task_id]['file_size'] = format_file_size(os.path.getsize(file_path))
+        else:
+            raise Exception(cobalt_data.get('text', 'Unknown error from Cobalt API'))
 
     except Exception as e:
         with tasks_lock:
