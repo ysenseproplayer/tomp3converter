@@ -17,9 +17,9 @@ def process_download(task_id, url, format_type, quality):
         with tasks_lock:
             tasks[task_id] = {'status': 'processing', 'progress': 25}
 
-        # Cobalt API call
+        # Map quality values for Cobalt API
         if format_type == 'mp4':
-            # Video download
+            # Video download: Cobalt uses values like 1080, 720, 480, etc.
             cobalt_payload = {
                 'url': url,
                 'isAudioOnly': False,
@@ -28,7 +28,7 @@ def process_download(task_id, url, format_type, quality):
                 'filenamePattern': 'classic'
             }
         else:
-            # Audio download
+            # Audio download: Cobalt uses aFormat and we don't need bitrate (it uses best)
             cobalt_payload = {
                 'url': url,
                 'isAudioOnly': True,
