@@ -18,14 +18,23 @@ def process_download(task_id, url, format_type, quality):
             tasks[task_id] = {'status': 'processing', 'progress': 25}
 
         # Cobalt API call
-        cobalt_payload = {
-            'url': url,
-            'aFormat': format_type if format_type != 'mp4' else 'mp3',
-            'vCodec': 'h264',
-            'vQuality': quality if format_type == 'mp4' else None,
-            'isAudioOnly': format_type != 'mp4',
-            'downloadMode': 'auto'
-        }
+        if format_type == 'mp4':
+            # Video download
+            cobalt_payload = {
+                'url': url,
+                'isAudioOnly': False,
+                'vQuality': quality,
+                'vCodec': 'h264',
+                'filenamePattern': 'classic'
+            }
+        else:
+            # Audio download
+            cobalt_payload = {
+                'url': url,
+                'isAudioOnly': True,
+                'aFormat': format_type,
+                'filenamePattern': 'classic'
+            }
 
         cobalt_response = requests.post(
             'https://api.cobalt.tools/api/json',
