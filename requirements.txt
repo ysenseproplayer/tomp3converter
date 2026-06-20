@@ -1,5 +1,2 @@
-yt-dlp
-pydub
 flask
-flask-cors
-gunicorn
+yt-dlp

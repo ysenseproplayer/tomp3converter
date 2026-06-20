@@ -179,6 +179,40 @@ input[type="text"]:focus {
     border-color: #7c3aed;
 }
 
+/* Drag and Drop Zone */
+.drop-zone {
+    width: 100%;
+    padding: 40px 20px;
+    border: 3px dashed #cbd5e0;
+    border-radius: 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 25px;
+}
+
+.drop-zone.dragover {
+    border-color: #7c3aed;
+    background: #faf5ff;
+}
+
+.drop-zone-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.drop-zone-text {
+    color: #4a5568;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.drop-zone-subtext {
+    color: #718096;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
 button {
     width: 100%;
     padding: 18px;
